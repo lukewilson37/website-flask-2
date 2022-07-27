@@ -11,34 +11,14 @@ datastore_client = datastore.Client()
 
 @app.route('/')
 def root():
-	# Fetch the most recent 10 access times from Datastore.
-	times = update_team_info('Barcelona')
-
-	return render_template('index.html', times=json.loads(times)['Barcelona']['schedule'])
+	return render_template('index.html')
 
 
 @app.route('/highlights')
 def highlights_page():
-	times = update_team_info('Barcelona')
+	games = update_team_info('Barcelona')
 
-	return render_template('index.html', times=json.loads(times)['Barcelona']['schedule'])
-
-def store_time(dt):
-    entity = datastore.Entity(key=datastore_client.key('visit'))
-    entity.update({
-        'timestamp': dt
-    })
-
-    datastore_client.put(entity)
-
-
-def fetch_times(limit):
-    query = datastore_client.query(kind='visit')
-    query.order = ['-timestamp']
-
-    times = query.fetch(limit=limit)
-
-    return times
+	return render_template('highlights.html', games=json.loads(games)['Barcelona']['schedule'])
 
 def update_team_info(team_name):
 	# calls API and pushes to datastore
@@ -86,11 +66,4 @@ def return_embed_highlights(home,away):
     return "cannot find game"
     
 if __name__ == '__main__':
-    # This is used when running locally only. When deploying to Google App
-    # Engine, a webserver process such as Gunicorn will serve the app. This
-    # can be configured by adding an `entrypoint` to app.yaml.
-    # Flask's development server will automatically serve static files in
-    # the "static" directory. See:
-    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
-    # App Engine itself will serve those files as configured in app.yaml.
     app.run(host='127.0.0.1', port=8080, debug=True)
