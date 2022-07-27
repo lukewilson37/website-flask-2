@@ -23,4 +23,18 @@ from terminal
 
 ## 5. Configuring Firebase for web personalization
 
+Unsuccessful... ignoring web personalization for now
 
+## 6. Find Soccer Game Info - Configure API Football API
+
+Use API football to gether info about 
+
+## 7. Find way to gather and display Highlight in html - configure ScoreBot API
+
+Used to gather html for most recent game
+
+## 8. Build Automation st given team, find schedule info and highlights
+
+## 9. Build multi pages, home page and highlights page
+
+## 10. Map google cloud app to custom domain - lukewilsontx.com
