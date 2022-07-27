@@ -20,3 +20,6 @@ __pycache__/
 
 # gcloud key:
 key.json
+
+# readme:
+README.md
