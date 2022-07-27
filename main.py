@@ -4,10 +4,11 @@ from flask import Flask, render_template, request
 import google.oauth2.id_token
 import requests as r
 import json
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
-datastore_client = datastore.Client()
+client = datastore.Client()
 
 @app.route('/')
 def root():
@@ -16,13 +17,28 @@ def root():
 
 @app.route('/highlights')
 def highlights_page():
-	games = update_team_info('Barcelona')
+	team_info = fetch_team_info('Barcelona')
 
-	return render_template('highlights.html', games=json.loads(games)['Barcelona']['schedule'])
+	return render_template('highlights.html', games=json.loads(team_info)['Barcelona']['schedule'])
+
+def fetch_team_info(team_name):
+    key = client.key('team_info',team_name)
+    try: entity = client.get(key)
+    except: 
+        update_team_info(team_name)
+        entity = client.get(key)
+        return entity[team_name]
+    team_info = json.loads(entity[team_name])
+    next_game_time = datetime.strptime(team_info[team_name]['schedule'][0]['time'][2:19], '%y-%m-%dT%H:%M:%S') + timedelta(hours = 4)
+    if next_game_time < datetime.utcnow(): 
+        update_team_info(team_name)
+        entity = client.get(key)
+    return entity[team_name]
+    
 
 def update_team_info(team_name):
 	# calls API and pushes to datastore
-    team_info = {"Barcelona": {"schedule": [{},{},{}] }}
+    team_info = {team_name: {"schedule": [{},{},{}] }}
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     querystring = {"season":"2022","team":"529","last":2,"timezone":"America/New_York"}
     headers = {
@@ -44,7 +60,9 @@ def update_team_info(team_name):
     team_info[team_name]['schedule'][0]['time'] = response['response'][0]['fixture']['date']
     
     # UPDTATE HIGHLIGHTS
-    return json.dumps(team_info)
+    entity = datastore.Entity(client.key('team_info',team_name))
+    entity[team_name] = json.dumps(team_info)
+    client.put(entity)
 
 def return_embed_highlights(home,away):
 
