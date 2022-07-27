@@ -20,7 +20,7 @@ def root():
 	# Fetch the most recent 10 access times from Datastore.
 	times = update_team_info('Barcelona')
 
-	return render_template('index.html', times=times)
+	return render_template('index.html', times=json.loads(times)['Barcelona']['schedule'])
 
 @app.route('/fb')
 def fb(i):
@@ -91,7 +91,7 @@ def fetch_times(limit):
 
     return times
 
-def update_team_info(team_id):
+def update_team_info(team_name):
 	# calls API and pushes to datastore
     team_info = {"Barcelona": {"schedule": [{},{},{}] }}
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
@@ -102,16 +102,40 @@ def update_team_info(team_id):
     }
     response = json.loads(r.request("GET", url, headers=headers, params=querystring).text)
     for i in range(2):
-        team_info[team_id]['schedule'][i]['home'] = response['response'][1-i]['teams']['home']['name']
-        team_info[team_id]['schedule'][i]['away'] = response['response'][1-i]['teams']['away']['name']
-        team_info[team_id]['schedule'][i]['time'] = response['response'][1-i]['fixture']['date']
+        team_info[team_name]['schedule'][1+i]['home'] = response['response'][i]['teams']['home']['name']
+        team_info[team_name]['schedule'][1+i]['away'] = response['response'][i]['teams']['away']['name']
+        team_info[team_name]['schedule'][1+i]['time'] = response['response'][i]['fixture']['date']
+        team_info[team_name]['schedule'][1+i]['embed_highlights'] = return_embed_highlights(\
+                                                                  team_info[team_name]['schedule'][1+i]['home'],
+                                                                  team_info[team_name]['schedule'][1+i]['away'])
     querystring = {"season":"2022","team":"529","next":1,"timezone":"America/New_York"}
     response = json.loads(r.request("GET", url, headers=headers, params=querystring).text)
-    team_info[team_id]['schedule'][2]['home'] = response['response'][0]['teams']['home']['name']
-    team_info[team_id]['schedule'][2]['away'] = response['response'][0]['teams']['away']['name']
-    team_info[team_id]['schedule'][2]['time'] = response['response'][0]['fixture']['date']
+    team_info[team_name]['schedule'][0]['home'] = response['response'][0]['teams']['home']['name']
+    team_info[team_name]['schedule'][0]['away'] = response['response'][0]['teams']['away']['name']
+    team_info[team_name]['schedule'][0]['time'] = response['response'][0]['fixture']['date']
+    
+    # UPDTATE HIGHLIGHTS
     return json.dumps(team_info)
 
+def return_embed_highlights(home,away):
+
+    url = "https://free-football-soccer-videos.p.rapidapi.com/"
+    headers = {
+	    "X-RapidAPI-Key": "9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07",
+	    "X-RapidAPI-Host": "free-football-soccer-videos.p.rapidapi.com"
+    }
+    response = r.request("GET", url, headers=headers)
+    for game in json.loads(response.text):
+        if ((game['side1']['name'] in home or home in game['side1']['name']) or\
+            (game['side2']['name'] in home or home in game['side2']['name'])) and\
+            ((game['side1']['name'] in away or away in game['side1']['name']) or\
+            (game['side2']['name'] in away or away in game['side2']['name'])):
+            for video in game['videos']:
+                if video['title'] == 'Highlights':
+                    return video['embed']
+            return "No highlights yet"
+    return "cannot find game"
+    
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
     # Engine, a webserver process such as Gunicorn will serve the app. This
