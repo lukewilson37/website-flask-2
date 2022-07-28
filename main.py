@@ -23,7 +23,8 @@ def highlights_page():
 
 @app.route('/highlights/<team_name>')
 def team_highlights_page(team_name):
-    team_info = fetch_team_info(team_name)
+    try: team_info = fetch_team_info(team_name)
+    except: return render_template('404.html')
     return render_template('highlights.html', games=json.loads(team_info)[team_name]['schedule'])
 
 @app.errorhandler(404)
