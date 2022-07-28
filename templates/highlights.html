@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>LW - Barca Highlights</title>
+  <title>LW - {{ team_name }} Highlights</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   
@@ -15,7 +15,7 @@
 
   <h1>Highlights</h1>
 
-  <h2>Barcelona Games</h2>
+  <h2>{{ team_name }} Games</h2>
   
   {% for game in games %}
     <p>{{ game['home'] }} vs {{ game['away'] }}</p>
