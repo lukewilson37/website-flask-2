@@ -38,3 +38,5 @@ Used to gather html for most recent game
 ## 9. Build multi pages, home page and highlights page
 
 ## 10. Map google cloud app to custom domain - lukewilsontx.com
+
+## 11. Config nbterm for jupyter testing - eases workflow

@@ -1,0 +1,91 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "\n",
+    ""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "source": [
+    "from google.cloud import datastore\n",
+    "from main import initialize_team_info, fetch_team_info"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "source": [
+    "client = datastore.Client()"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "source": [
+    "\n",
+    "print(client.get(client.key('team_info','Barcelona')))"
+   ],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "49\n<Entity('team_info', 'Barcelona') {'Barcelona': '{\"Barcelona\": {\"schedule\": [{\"home\": \"New York Red Bulls\", \"away\": \"Barcelona\", \"time\": \"2022-07-30T19:00:00-04:00\"}, {\"home\": \"Barcelona\", \"away\": \"Juventus\", \"time\": \"2022-07-26T20:30:00-04:00\", \"embed_highlights\": \"<div style=\\'width:100%;height:0px;position:relative;padding-bottom:56.250%;background:#000;\\'><iframe src=\\'https://www.scorebat.com/embed/v/62e0c9aca03e0/?utm_source=api&utm_medium=video&utm_campaign=dflt\\' frameborder=\\'0\\' width=\\'100%\\' height=\\'100%\\' allowfullscreen allow=\\'autoplay; fullscreen\\' style=\\'width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;\\'></iframe></div>\"}, {\"home\": \"Real Madrid\", \"away\": \"Barcelona\", \"time\": \"2022-07-23T23:00:00-04:00\", \"embed_highlights\": \"<div style=\\'width:100%;height:0px;position:relative;padding-bottom:56.250%;background:#000;\\'><iframe src=\\'https://www.scorebat.com/embed/v/62dcf523535b6/?utm_source=api&utm_medium=video&utm_campaign=dflt\\' frameborder=\\'0\\' width=\\'100%\\' height=\\'100%\\' allowfullscreen allow=\\'autoplay; fullscreen\\' style=\\'width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;\\'></iframe></div>\"}]}}'}>\n"
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "source": [
+    "\n",
+    "initialize_team_info('Chelsea','49')"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "source": [
+    "for i in range(2): print(i)"
+   ],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0\n1\n"
+     ]
+    }
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "version": "3.9.2"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
