@@ -21,6 +21,10 @@ def highlights_page():
 
 	return render_template('highlights.html', games=json.loads(team_info)['Barcelona']['schedule'])
 
+@app.errorhandler(404)
+def invalid_address(e):
+    return render_template('404.html')
+
 def fetch_team_info(team_name):
     key = client.key('team_info',team_name)
     try: entity = client.get(key)
@@ -58,7 +62,8 @@ def update_team_info(team_name):
     team_info[team_name]['schedule'][0]['home'] = response['response'][0]['teams']['home']['name']
     team_info[team_name]['schedule'][0]['away'] = response['response'][0]['teams']['away']['name']
     team_info[team_name]['schedule'][0]['time'] = response['response'][0]['fixture']['date']
-    
+    team_info[team_name]['schedule'][0]['embed_highlights'] = ['game has not started']
+
     # UPDTATE HIGHLIGHTS
     entity = datastore.Entity(client.key('team_info',team_name))
     entity[team_name] = json.dumps(team_info)
