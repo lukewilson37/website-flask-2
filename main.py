@@ -10,6 +10,8 @@ app = Flask(__name__)
 
 client = datastore.Client()
 
+# ROUTES ----------------------------------------------------------
+
 @app.route('/')
 def root():
 	return render_template('index.html')
@@ -17,13 +19,18 @@ def root():
 
 @app.route('/highlights')
 def highlights_page():
-	team_info = fetch_team_info('Barcelona')
+	return render_template('highlights_home.html')
 
-	return render_template('highlights.html', games=json.loads(team_info)['Barcelona']['schedule'])
+@app.route('/highlights/<team_name>')
+def team_highlights_page(team_name):
+    team_info = fetch_team_info(team_name)
+    return render_template('highlights.html', games=json.loads(team_info)[team_name]['schedule'])
 
 @app.errorhandler(404)
 def invalid_address(e):
     return render_template('404.html')
+
+# FUNCTIONS ---------------------------------------------------------
 
 def fetch_team_info(team_name):
     key = client.key('team_info',team_name)

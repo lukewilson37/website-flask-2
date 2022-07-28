@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Luke Wilson Personal Website</title>
+  <title>LW - Barca Highlights</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   
@@ -12,15 +12,13 @@
 </head>
 
 <body>
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v14.0" nonce="zGy6Ms2W"></script>
 
-  <h1>Luke Wilson's Highlights Page</h1>
+  <h1>Highlights</h1>
 
   <h2>Barcelona Games</h2>
   
   {% for game in games %}
-    <p>{{ game }}</p>
+    <p>{{ game['home'] }} vs {{ game['away'] }}</p>
     {{ game['embed_highlights']|safe }}
   {% endfor %}
 
