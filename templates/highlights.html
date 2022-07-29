@@ -3,12 +3,22 @@
 <head>
   <title>LW - {{ team_name }} Highlights</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  
-  <!-- VIDEO JS SCRIPTS -->
-  <link href="//vjs.zencdn.net/7.10.2/video-js.min.css" rel="stylesheet">
-  <script src="//vjs.zencdn.net/7.10.2/video.min.js"></script>
-  <script src="../static/youtube.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='highlights.css') }}">
+  <style>
+    .hidetitle-square {
+      height: 70px;
+      width: {{ video_width }}px;
+      background-color: #555;
+      position: absolute;
+      top:0;
+      left: 50%;
+      transform: translate(-50%,0%);
+    }
+    
+    .hidetitle-frame {
+      position: relative;
+    }
+  </style> 
 </head>
 
 <body>
@@ -19,7 +29,11 @@
   
   {% for game in games %}
     <p>{{ game['home'] }} vs {{ game['away'] }}</p>
-    {{ game['embed_highlights']|safe }}
+    <div class="hidetitle-frame">
+      {% autoescape false %}
+        {{ game['embed_highlights'] | replace("video_width", video_width) | safe }}
+      {% endautoescape %}
+    </div>
   {% endfor %}
 
 </body>

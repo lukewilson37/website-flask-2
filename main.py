@@ -31,10 +31,12 @@ def league_highlights_page(league_name):
 
 @app.route('/highlights/<league_name>/<team_name>')
 def team_highlights_page(league_name, team_name):
+    video_width = '500'
     if team_name not in client.get(client.key('league_teams',league_name))[league_name]: abort(404)
     try: team_info = fetch_team_info(team_name)
     except: return render_template('404.html')
-    return render_template('highlights.html', team_name=team_name,  games=json.loads(team_info)[team_name]['schedule'])
+    games = json.loads(team_info)[team_name]['schedule']
+    return render_template('highlights.html', team_name=team_name, games=games, video_width=video_width)
 
 @app.errorhandler(404)
 def invalid_address(e):
@@ -52,11 +54,10 @@ def fetch_team_info(team_name):
             raise Exception()
         for i in range(2):
             if team_info[team_name]['schedule'][i]['embeded_highlights'][0] != '<': raise Exception()
-        return entity[team_name]
     except: 
         update_team_info(team_name)
         entity = client.get(key)
-        return entity[team_name]
+    return entity[team_name]
     
 
 def update_team_info(team_name):
@@ -112,7 +113,7 @@ def OLD_return_embed_highlights(home,away):
 def return_embed_highlights(home,away):
     q = r.get('https://www.youtube.com/results?search_query=' + home.replace(' ','+') + '+' + away.replace(' ','+') + '+highlights')
     video_id = q.text.split('/watch?v=')[1][0:11]
-    embed_highlights = '<iframe width="420" height="315"src="https://www.youtube.com/embed/' + video_id + '"></iframe>'
+    embed_highlights = '<iframe width="video_width" height="video_width"src="https://www.youtube.com/embed/' + video_id + '"></iframe><div class="hidetitle-square"></div>'
     return embed_highlights
     
 
