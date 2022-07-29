@@ -10,10 +10,10 @@
 
 <body>
 
-  <h1>Highlight Page</h1>
+  <h1>{{ team_list.key.name }}</h1>
 
-  {% for entity in leagues %}
-    <p><a href="highlights/{{ entity.key.name }}">{{ entity.key.name }}</a></p>
+  {% for team in team_list[team_list.key.name] %}
+    <p><a href="{{ team_list.key.name }}/{{ team }}">{{ team }}</a></p>
   {% endfor %}
 
 </body>

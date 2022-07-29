@@ -19,10 +19,19 @@ def root():
 
 @app.route('/highlights')
 def highlights_page():
-	return render_template('highlights_home.html')
+    query = client.query(kind='league_teams')
+    leagues = query.fetch()
+    return render_template('highlights_home.html', leagues=leagues)
 
-@app.route('/highlights/<team_name>')
-def team_highlights_page(team_name):
+@app.route('/highlights/<league_name>')
+def league_highlights_page(league_name):
+    try: team_list = client.get(client.key('league_teams',league_name))
+    except: return render_template('404.html')
+    return render_template('highlights_league_home.html',team_list=team_list)
+
+@app.route('/highlights/<league_name>/<team_name>')
+def team_highlights_page(league_name, team_name):
+    if team_name not in client.get(client.key('league_teams',league_name))[league_name]: abort(404)
     try: team_info = fetch_team_info(team_name)
     except: return render_template('404.html')
     return render_template('highlights.html', team_name=team_name,  games=json.loads(team_info)[team_name]['schedule'])
@@ -51,14 +60,14 @@ def fetch_team_info(team_name):
     
 
 def update_team_info(team_name):
-	# calls API and pushes to datastore
+    # calls API and pushes to datastore
     team_info = {team_name: {"schedule": [{},{},{}] }}
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     api_football_team_id = client.get(client.key('api_football_team_id',team_name))
     querystring = {"season":"2022","team":api_football_team_id[team_name],"last":2,"timezone":"America/New_York"}
     headers = {
-	    "X-RapidAPI-Key": "9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07",
-	    "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
+        "X-RapidAPI-Key": "9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07",
+        "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
     }
     response = json.loads(r.request("GET", url, headers=headers, params=querystring).text)
     for i in range(2):
@@ -80,12 +89,13 @@ def update_team_info(team_name):
     entity[team_name] = json.dumps(team_info)
     client.put(entity)
 
-def return_embed_highlights(home,away):
+# OLD FUNCTION
+def OLD_return_embed_highlights(home,away):
 
     url = "https://free-football-soccer-videos.p.rapidapi.com/"
     headers = {
-	    "X-RapidAPI-Key": "9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07",
-	    "X-RapidAPI-Host": "free-football-soccer-videos.p.rapidapi.com"
+        "X-RapidAPI-Key": "9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07",
+        "X-RapidAPI-Host": "free-football-soccer-videos.p.rapidapi.com"
     }
     response = r.request("GET", url, headers=headers)
     for game in json.loads(response.text):
@@ -98,6 +108,13 @@ def return_embed_highlights(home,away):
                     return video['embed']
             return "No highlights yet"
     return "cannot find game"
+
+def return_embed_highlights(home,away):
+    q = r.get('https://www.youtube.com/results?search_query=' + home.replace(' ','+') + '+' + away.replace(' ','+') + '+highlights')
+    video_id = q.text.split('/watch?v=')[1][0:11]
+    embed_highlights = '<iframe width="420" height="315"src="https://www.youtube.com/embed/' + video_id + '"></iframe>'
+    return embed_highlights
+    
 
 def initialize_team_info(team_name,api_football_team_id):
     # PUT TEAM INFO

@@ -13,14 +13,29 @@
    "execution_count": 1,
    "metadata": {},
    "source": [
+    "import requests\n",
+    "import json\n",
     "from google.cloud import datastore\n",
-    "from main import initialize_team_info, fetch_team_info"
+    "from main import fetch_team_info\n",
+    "from initializer import initialize_team_info, initialize_league"
    ],
-   "outputs": []
+   "outputs": [
+    {
+     "ename": "SyntaxError",
+     "evalue": "invalid syntax (initializer.py, line 41)",
+     "output_type": "error",
+     "traceback": [
+      "Traceback \u001b[0;36m(most recent call last)\u001b[0m:\n",
+      "  File \u001b[1;32m\"/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/IPython/core/interactiveshell.py\"\u001b[0m, line \u001b[1;32m3553\u001b[0m, in \u001b[1;35mrun_code\u001b[0m\n    exec(code_obj, self.user_global_ns, self.user_ns)\n",
+      "\u001b[0;36m  File \u001b[0;32m\"/var/folders/jg/hflz1dd92qjd8kdq1lxdr2_r0000gn/T/ipykernel_10982/2876574155.py\"\u001b[0;36m, line \u001b[0;32m5\u001b[0;36m, in \u001b[0;35m<module>\u001b[0;36m\u001b[0m\n\u001b[0;31m    from initializer import initialize_team_info, initialize_league\u001b[0m\n",
+      "\u001b[0;36m  File \u001b[0;32m\"/Users/lukewilson/OneDrive/CodingStuff/website-flask-2/initializer.py\"\u001b[0;36m, line \u001b[0;32m41\u001b[0m\n\u001b[0;31m    def delete_league_teams_entity(league_name)\u001b[0m\n\u001b[0m                                               ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
+     ]
+    }
+   ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 12,
    "metadata": {},
    "source": [
     "client = datastore.Client()"
@@ -29,48 +44,131 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 11,
+   "execution_count": 20,
    "metadata": {},
    "source": [
-    "\n",
-    "print(client.get(client.key('team_info','Barcelona')))"
+    "league_name = 'PremierLeague'\n",
+    "team_name = 'Arsenal'\n",
+    "team_name not in client.get(client.key('league_teams',league_name))[league_name]"
    ],
    "outputs": [
     {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "49\n<Entity('team_info', 'Barcelona') {'Barcelona': '{\"Barcelona\": {\"schedule\": [{\"home\": \"New York Red Bulls\", \"away\": \"Barcelona\", \"time\": \"2022-07-30T19:00:00-04:00\"}, {\"home\": \"Barcelona\", \"away\": \"Juventus\", \"time\": \"2022-07-26T20:30:00-04:00\", \"embed_highlights\": \"<div style=\\'width:100%;height:0px;position:relative;padding-bottom:56.250%;background:#000;\\'><iframe src=\\'https://www.scorebat.com/embed/v/62e0c9aca03e0/?utm_source=api&utm_medium=video&utm_campaign=dflt\\' frameborder=\\'0\\' width=\\'100%\\' height=\\'100%\\' allowfullscreen allow=\\'autoplay; fullscreen\\' style=\\'width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;\\'></iframe></div>\"}, {\"home\": \"Real Madrid\", \"away\": \"Barcelona\", \"time\": \"2022-07-23T23:00:00-04:00\", \"embed_highlights\": \"<div style=\\'width:100%;height:0px;position:relative;padding-bottom:56.250%;background:#000;\\'><iframe src=\\'https://www.scorebat.com/embed/v/62dcf523535b6/?utm_source=api&utm_medium=video&utm_campaign=dflt\\' frameborder=\\'0\\' width=\\'100%\\' height=\\'100%\\' allowfullscreen allow=\\'autoplay; fullscreen\\' style=\\'width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;\\'></iframe></div>\"}]}}'}>\n"
+     "data": {
+      "text/plain": [
+       "False"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "source": [
+    "initialize_league('LaLiga','140')"
+   ],
+   "outputs": [
+    {
+     "ename": "NameError",
+     "evalue": "name 'requests' is not defined",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
+      "\u001b[0;32m/var/folders/jg/hflz1dd92qjd8kdq1lxdr2_r0000gn/T/ipykernel_10330/1033032779.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0minitialize_league\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'LaLiga'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m'140'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+      "\u001b[0;32m~/OneDrive/CodingStuff/website-flask-2/initializer.py\u001b[0m in \u001b[0;36minitialize_league\u001b[0;34m(league_name, api_football_league_id, season, initialize_teams)\u001b[0m\n\u001b[1;32m     22\u001b[0m     \u001b[0mquerystring\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m{\u001b[0m\u001b[0;34m\"league\"\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mapi_football_league_id\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\"season\"\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mseason\u001b[0m\u001b[0;34m}\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     23\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 24\u001b[0;31m     headers = {\n\u001b[0m\u001b[1;32m     25\u001b[0m         \u001b[0;34m\"X-RapidAPI-Key\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     26\u001b[0m         \u001b[0;34m\"X-RapidAPI-Host\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"api-football-v1.p.rapidapi.com\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+      "\u001b[0;31mNameError\u001b[0m: name 'requests' is not defined"
      ]
     }
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 22,
    "metadata": {},
    "source": [
-    "\n",
-    "initialize_team_info('Chelsea','49')"
+    "team_info = fetch_team_info(team_name)"
    ],
    "outputs": []
   },
   {
    "cell_type": "code",
-   "execution_count": 8,
+   "execution_count": 23,
    "metadata": {},
    "source": [
-    "for i in range(2): print(i)"
+    "client.delete(client.key('league_teams','Premier League'))"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "source": [
+    "query = client.query()\n",
+    "\n",
+    "times = query.fetch()\n",
+    "for e in times:\n",
+    "    print(e.key.name)"
    ],
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "0\n1\n"
+      "simpleTask\nBarcelona\nvisit_5634161670881280\nTask\nvisit\nTask\nvisit\ncategory_Task\ndescription_Task\ndone_Task\npriority_Task\nstatus_Task\ntimestamp_visit\nBoolean_Task\nDate/Time_visit\nInteger_Task\nString_Task\nBoolean_done_Task\nDate/Time_timestamp_visit\nInteger_priority_Task\nString_category_Task\nString_description_Task\nString_status_Task\nBoolean\nDate/Time\nInteger\nString\ntotal_entity_usage\nAustin\nBarcelona\nChelsea\nAustin\nBarcelona\nChelsea\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\nNone\n"
      ]
     }
    ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "source": [
+    "url = \"https://api-football-v1.p.rapidapi.com/v3/teams\"\n",
+    "\n",
+    "querystring = {\"league\":\"39\",\"season\":\"2022\"}\n",
+    "\n",
+    "headers = {\n",
+    "\t\"X-RapidAPI-Key\": \"9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07\",\n",
+    "\t\"X-RapidAPI-Host\": \"api-football-v1.p.rapidapi.com\"\n",
+    "}\n",
+    "\n",
+    "response = requests.request(\"GET\", url, headers=headers, params=querystring)"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "source": [
+    "for team in json.loads(response.text)['response']:\n",
+    "    "
+   ],
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "33\n34\n35\n36\n39\n40\n41\n42\n45\n46\n47\n48\n49\n50\n51\n52\n55\n63\n65\n66\n"
+     ]
+    }
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "source": [
+    "# HOLD TO VIEW OUTPUTS ABOVE"
+   ],
+   "outputs": []
   }
  ],
  "metadata": {
