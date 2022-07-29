@@ -31,6 +31,7 @@ def league_highlights_page(league_name):
 
 @app.route('/highlights/<league_name>/<team_name>')
 def team_highlights_page(league_name, team_name):
+    team_name = team_name.replace('%20',' ')
     video_width = '500'
     if team_name not in client.get(client.key('league_teams',league_name))[league_name]: abort(404)
     try: team_info = fetch_team_info(team_name)
@@ -53,14 +54,16 @@ def fetch_team_info(team_name):
         if next_game_time < datetime.utcnow(): 
             raise Exception()
         for i in range(2):
-            if team_info[team_name]['schedule'][i]['embeded_highlights'][0] != '<': raise Exception()
-    except: 
+            if team_info[team_name]['schedule'][i+1]['embed_highlights'][0] != '<': raise Exception()
+    except:
+        print('fetch_team_info exception' + team_name) 
         update_team_info(team_name)
         entity = client.get(key)
     return entity[team_name]
     
 
 def update_team_info(team_name):
+    print('updating')
     # calls API and pushes to datastore
     team_info = {team_name: {"schedule": [{},{},{}] }}
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
