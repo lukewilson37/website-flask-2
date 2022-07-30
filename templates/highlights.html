@@ -26,13 +26,16 @@
   <h1>Highlights</h1>
 
   <h2>{{ team_name }} Games</h2>
-  
-  {% for game in games %}
-    <p>{{ game['home'] }} vs {{ game['away'] }}</p>
+
+  <p>{{ games[0]['home'] }} vs {{ games[0]['away'] }}</p>
+  game will start at {{ games[0]['time'] }} 
+  {% for i in range(1,3) %}
+    <p>{{ games[i]['home'] }} vs {{ games[i]['away'] }}</p>
     <div class="hidetitle-frame">
       {% autoescape false %}
-        {{ game['embed_highlights'] | replace("video_width", video_width) | safe }}
+        {{ games[i]['embed_highlights'] | replace("video_width", video_width) | safe }}
       {% endautoescape %}
+      <div class="hidetitle-square"></div></div>
     </div>
   {% endfor %}
 

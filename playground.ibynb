@@ -10,7 +10,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 8,
    "metadata": {},
    "source": [
     "import requests\n",
@@ -19,28 +19,45 @@
     "from main import fetch_team_info\n",
     "from initializer import initialize_team_info, initialize_league"
    ],
-   "outputs": [
-    {
-     "ename": "SyntaxError",
-     "evalue": "invalid syntax (initializer.py, line 41)",
-     "output_type": "error",
-     "traceback": [
-      "Traceback \u001b[0;36m(most recent call last)\u001b[0m:\n",
-      "  File \u001b[1;32m\"/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/IPython/core/interactiveshell.py\"\u001b[0m, line \u001b[1;32m3553\u001b[0m, in \u001b[1;35mrun_code\u001b[0m\n    exec(code_obj, self.user_global_ns, self.user_ns)\n",
-      "\u001b[0;36m  File \u001b[0;32m\"/var/folders/jg/hflz1dd92qjd8kdq1lxdr2_r0000gn/T/ipykernel_10982/2876574155.py\"\u001b[0;36m, line \u001b[0;32m5\u001b[0;36m, in \u001b[0;35m<module>\u001b[0;36m\u001b[0m\n\u001b[0;31m    from initializer import initialize_team_info, initialize_league\u001b[0m\n",
-      "\u001b[0;36m  File \u001b[0;32m\"/Users/lukewilson/OneDrive/CodingStuff/website-flask-2/initializer.py\"\u001b[0;36m, line \u001b[0;32m41\u001b[0m\n\u001b[0;31m    def delete_league_teams_entity(league_name)\u001b[0m\n\u001b[0m                                               ^\u001b[0m\n\u001b[0;31mSyntaxError\u001b[0m\u001b[0;31m:\u001b[0m invalid syntax\n"
-     ]
-    }
-   ]
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "source": [
+    "client = datastore.Client()"
+   ],
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "source": [
+    "query = client.query(kind='team_info')"
+   ],
+   "outputs": []
   },
   {
    "cell_type": "code",
    "execution_count": 12,
    "metadata": {},
    "source": [
-    "client = datastore.Client()"
+    "query.fetch().order("
    ],
-   "outputs": []
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<google.cloud.datastore.query.Query at 0x7f8a62caee90>"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ]
   },
   {
    "cell_type": "code",
@@ -66,25 +83,12 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": 7,
    "metadata": {},
    "source": [
-    "initialize_league('LaLiga','140')"
+    "initialize_league('MLS','253')"
    ],
-   "outputs": [
-    {
-     "ename": "NameError",
-     "evalue": "name 'requests' is not defined",
-     "output_type": "error",
-     "traceback": [
-      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
-      "\u001b[0;31mNameError\u001b[0m                                 Traceback (most recent call last)",
-      "\u001b[0;32m/var/folders/jg/hflz1dd92qjd8kdq1lxdr2_r0000gn/T/ipykernel_10330/1033032779.py\u001b[0m in \u001b[0;36m<module>\u001b[0;34m\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0minitialize_league\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m'LaLiga'\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m'140'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
-      "\u001b[0;32m~/OneDrive/CodingStuff/website-flask-2/initializer.py\u001b[0m in \u001b[0;36minitialize_league\u001b[0;34m(league_name, api_football_league_id, season, initialize_teams)\u001b[0m\n\u001b[1;32m     22\u001b[0m     \u001b[0mquerystring\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0;34m{\u001b[0m\u001b[0;34m\"league\"\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mapi_football_league_id\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\"season\"\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0mseason\u001b[0m\u001b[0;34m}\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     23\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m---> 24\u001b[0;31m     headers = {\n\u001b[0m\u001b[1;32m     25\u001b[0m         \u001b[0;34m\"X-RapidAPI-Key\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"9f0303d58bmsh4ba4d5e0c9d5e51p17a64ajsnd6ba4f5a2e07\"\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m     26\u001b[0m         \u001b[0;34m\"X-RapidAPI-Host\"\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0;34m\"api-football-v1.p.rapidapi.com\"\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
-      "\u001b[0;31mNameError\u001b[0m: name 'requests' is not defined"
-     ]
-    }
-   ]
+   "outputs": []
   },
   {
    "cell_type": "code",
