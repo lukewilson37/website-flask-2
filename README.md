@@ -40,3 +40,33 @@ Used to gather html for most recent game
 ## 10. Map google cloud app to custom domain - lukewilsontx.com
 
 ## 11. Config nbterm for jupyter testing - eases workflow
+
+## 12. Create Leagues Page, func to find league team/ids, edit html and db to accomodate leagues
+
+New leagues route.
+
+Intitalize league function utilizes football endpoint to find teams in league
+
+add db league kind to store teams in league
+
+edit html to read teams from league
+
+## 13. New embed_highlights function
+
+Using requests, 
+
+youtube search for fixture highlights, 
+
+find first result video id, 
+
+return html object is str
+
+## 14. Using .css object to block title of video
+
+so the fixture result is hidden, as it often is in these videos
+
+creates squre obj, to be child of video overlayed on video
+
+adds video_width variables to adjust video size
+
+# 15. 
