@@ -33,7 +33,9 @@
       {% autoescape false %}
         {{ games[i]['embed_highlights'] | replace("video_width", video_width) | safe }}
       {% endautoescape %}
-      <div class="hidetitle-square"></div></div>
+      <div class="hidetitle-square">
+      
+      </div></div>
     </div>
   {% endfor %}
 
