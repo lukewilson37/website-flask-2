@@ -3,12 +3,12 @@
 <head>
   <title>LW - {{ team_name }} Highlights</title>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='highlights.css') }}">
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
     .hidetitle-square {
       height: 70px;
-      width: {{ video_width }}px;
-      background-color: #555;
+      width: {{ video_width + 20 }}px;
+      background-color: cornflowerBlue;
       position: absolute;
       top:0;
       left: 50%;
@@ -23,9 +23,7 @@
 
 <body>
 
-  <h1>Highlights</h1>
-
-  <h2>{{ team_name }} Games</h2>
+  <h1>{{ team_name }} Highlights</h1>
 
   <p>{{ games[0]['home'] }} vs {{ games[0]['away'] }}</p>
   game will start at {{ games[0]['time'] }} 

@@ -32,7 +32,7 @@ def league_highlights_page(league_name):
 @app.route('/highlights/<league_name>/<team_name>')
 def team_highlights_page(league_name, team_name):
     team_name = team_name.replace('%20',' ')
-    video_width = '500'
+    video_width = 500
     if team_name not in client.get(client.key('league_teams',league_name))[league_name]: abort(404)
     try: team_info = fetch_team_info(team_name)
     except: return render_template('404.html')
