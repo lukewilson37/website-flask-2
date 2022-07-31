@@ -29,8 +29,10 @@ def league_highlights_page(league_name):
     except: return render_template('404.html')
     return render_template('highlights_league_home.html',team_list=team_list)
 
-@app.route('/highlights/<league_name>/<team_name>')
+@app.route('/highlights/<league_name>/<team_name>', methods=['GET','POST'])
 def team_highlights_page(league_name, team_name):
+    if request.method == 'POST':
+        if request.form.get('refresh') == 'Refresh Highlights': update_team_info(team_name)
     team_name = team_name.replace('%20',' ')
     video_width = 500
     if team_name not in client.get(client.key('league_teams',league_name))[league_name]: abort(404)
